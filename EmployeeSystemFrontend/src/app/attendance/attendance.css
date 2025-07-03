@@ -1,0 +1,16 @@
+.name-card {
+  width: 220px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d6dde3;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.name-content {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+}

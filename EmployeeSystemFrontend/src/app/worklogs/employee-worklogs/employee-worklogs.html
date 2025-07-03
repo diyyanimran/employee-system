@@ -1,0 +1,120 @@
+<table mat-table [dataSource]="rows" class="mat-elevation-z8 custom-table">
+
+  <ng-container matColumnDef="task">
+    <th mat-header-cell *matHeaderCellDef> Task </th>
+    <td mat-cell *matCellDef="let row"> {{ row.task }} </td>
+    <td mat-footer-cell *matFooterCellDef></td>
+  </ng-container>
+
+  <ng-container *ngFor="let day of days" [matColumnDef]="day">
+    <th mat-header-cell *matHeaderCellDef class="worklog-data"> {{ day }} </th>
+    <td mat-cell *matCellDef="let row" class="worklog-data"> {{ row.data[day] ?? 0 }} </td>
+    <td mat-footer-cell *matFooterCellDef>
+      <button *ngIf="isAdmin" mat-icon-button (click)="deleteWorklog(day)" class="delete-button">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+
+  <tr mat-row *matRowDef="let row; columns: columnNames;"></tr>
+
+  <tr mat-footer-row *matFooterRowDef="columnNames; sticky: false"></tr>
+</table>
+
+<div class="forms-container">
+  <div class="add-button-container" *ngIf="isAdmin">
+    <button matButton (click)="toggleAddingNew()">
+      <mat-icon>add_circle_outline</mat-icon>
+      <span>Add Worklog</span>
+    </button>
+
+    <mat-card *ngIf="isAddingNew && formsLoaded" class="form-card">
+      <form [formGroup]="newWorklogForm" (ngSubmit)="onFormSubmitNew()" class="form-container">
+        <mat-form-field appearance="fill" class="input-field-code">
+          <mat-label>Select a day</mat-label>
+          <mat-select formControlName="dayControl">
+            <mat-option *ngFor="let day of days" [value]="day">
+              {{ day }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="input-field-code">
+          <mat-label>Developing</mat-label>
+          <input matInput type="text" formControlName="developing" required class="input-box">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="input-field-code">
+          <mat-label>Designing</mat-label>
+          <input matInput type="text" formControlName="designing" required class="input-box">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="input-field-code">
+          <mat-label>Fixing</mat-label>
+          <input matInput type="text" formControlName="fixing" required class="input-box">
+        </mat-form-field>
+
+        <div class="form-buttons">
+          <button mat-icon-button class="button" type="submit">
+            <mat-icon class="done-button">done</mat-icon>
+          </button>
+          <button mat-icon-button (click)="cancelNewWorklog()" type="button">
+            <mat-icon class="close-button">close</mat-icon>
+          </button>
+        </div>
+      </form>
+
+      <span class="error-message">{{errorMessageNew}}</span>
+    </mat-card>
+  </div>
+
+
+
+  <div class="update-button-container" *ngIf="isAdmin && formsLoaded">
+    <button matButton (click)="toggleUpdating()">
+      <mat-icon>add_circle_outline</mat-icon>
+      <span>Update Worklog</span>
+    </button>
+
+    <mat-card *ngIf="isUpdating" class="form-card">
+      <form [formGroup]="updateWorklogForm" (ngSubmit)="onFormSubmitUpdate()" class="form-container">
+        <mat-form-field appearance="fill" class="input-field-code">
+          <mat-label>Select a day</mat-label>
+          <mat-select formControlName="dayControl">
+            <mat-option *ngFor="let day of days" [value]="day">
+              {{ day }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="input-field-code">
+          <mat-label>Developing</mat-label>
+          <input matInput type="text" formControlName="developing" required class="input-box">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="input-field-code">
+          <mat-label>Designing</mat-label>
+          <input matInput type="text" formControlName="designing" required class="input-box">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="input-field-code">
+          <mat-label>Fixing</mat-label>
+          <input matInput type="text" formControlName="fixing" required class="input-box">
+        </mat-form-field>
+
+        <div class="form-buttons">
+          <button mat-icon-button class="button" type="submit">
+            <mat-icon class="done-button">done</mat-icon>
+          </button>
+          <button mat-icon-button (click)="cancelUpdateWorklog()" type="button">
+            <mat-icon class="close-button">close</mat-icon>
+          </button>
+        </div>
+      </form>
+
+      <span class="error-message">{{errorMessageUpdate}}</span>
+    </mat-card>
+  </div>
+</div>

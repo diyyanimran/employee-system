@@ -1,0 +1,15 @@
+<mat-form-field *ngIf="isAdmin" class="dropdown">
+  <mat-label>Employee</mat-label>
+  <mat-select [(ngModel)]="selectedId" (selectionChange)="onSelected()">
+      <mat-option *ngFor="let name of names"
+      [value]="name.id">{{name.name}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-card *ngIf="!isAdmin" class="name-card">
+  <div class="name-content">
+    {{ employeeInfo?.name }}
+  </div>
+</mat-card>
+
+<router-outlet></router-outlet>

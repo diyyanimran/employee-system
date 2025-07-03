@@ -1,0 +1,65 @@
+<div class="page-container">
+    <div class="card-container">
+        <ng-container *ngIf="totalDays > 0; else noRecords">
+            <h1 class="card-header">
+                {{ pagedAttendance[currentPageIndex].date}}
+            </h1>
+            <mat-card>
+
+                <mat-paginator [length]="totalDays" [pageSize]="1" [pageSizeOptions]="[]" [hidePageSize]="true"
+                    (page)="onPageChange($event)" showFirstLastButtons aria-label="Select page" class="paginator">
+                </mat-paginator>
+                <div class="table-container">
+                    <table mat-table [dataSource]="pagedAttendance[currentPageIndex].records" class="attendance-table">
+
+                        <ng-container matColumnDef="checkInTime">
+                            <th mat-header-cell *matHeaderCellDef> Check In </th>
+                            <td mat-cell *matCellDef="let row">
+                                {{ row?.checkInTime ? (row.checkInTime | date: 'shortTime') : '--/--' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="checkOutTime">
+                            <th mat-header-cell *matHeaderCellDef> Check Out </th>
+                            <td mat-cell *matCellDef="let row">
+                                {{ row?.checkOutTime ? (row.checkOutTime | date: 'shortTime') : '--/--' }}
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+
+                <div class="attendance-summary">
+                    <span>Present:
+                        <mat-icon [color]="isPresent ? 'primary' : 'warn'"
+                        class="summary-icon">
+                            {{ isPresent ? 'done' : 'close' }}
+                        </mat-icon>
+                    </span>
+
+                    <span>Leave Allowed:
+                        <mat-icon [color]="isLeaveAllowed ? 'primary' : 'warn'"
+                        class="summary-icon">
+                            {{ isLeaveAllowed ? 'done' : 'close' }}
+                        </mat-icon>
+                    </span>
+                </div>
+            </mat-card>
+        </ng-container>
+
+        <ng-template #noRecords>
+            <h1 class="card-header">
+                {{'No Records' }}
+            </h1>
+        </ng-template>
+    </div>
+
+    <div class="button-container" *ngIf="isAdmin">
+        <button matButton="filled" (click)="allowLeave()">
+            {{isLeaveAllowed ? "Disallow Leave" : "Allow Leave"}}
+        </button>
+        <span [style.color]="'green'">{{message}}</span>
+    </div>
+</div>

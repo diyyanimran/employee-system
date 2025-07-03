@@ -1,0 +1,73 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    margin-left: 40px;
+}
+
+.card-container {
+    margin-top: 40px;
+    margin-right: 40px;
+    height: 500px;
+    overflow-y: auto;
+}
+
+.card-header {
+    font-size: large;
+    font-weight: 600;
+}
+
+.attendance-table {
+    background-color: inherit;
+}
+
+mat-card {
+  padding: 8px 16px 16px 16px;
+}
+
+.mat-cell {
+    font-size: large;
+    padding-left: 25px;
+    padding-top: 10px;
+}
+
+mat-cell {
+    font-size: large;
+    padding-top: 10px;
+}
+
+mat-header-cell,
+mat-cell {
+    padding-left: 12px;
+}
+
+.button-container {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    gap: 440px;
+}
+
+.paginator
+{
+    background-color: inherit;
+}
+
+.table-container {
+  overflow-y: auto;
+  flex-grow: 1;
+  max-height: 300px;
+}
+
+.attendance-summary
+{
+    display: flex;
+    padding: 8px 10px;
+    gap: 100px;
+}
+
+.summary-icon {
+  margin-left: 6px;
+  vertical-align: middle;
+  font-size: 20px;
+}

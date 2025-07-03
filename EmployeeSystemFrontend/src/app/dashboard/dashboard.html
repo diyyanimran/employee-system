@@ -1,0 +1,54 @@
+<mat-sidenav-container class="container">
+    <mat-sidenav #sidenav mode="side" [opened]="false">
+        <mat-nav-list>
+            <a mat-list-item
+            (click)="navigateIfNotCurrent('/dashboard/employees'); sidenav.close()">
+                <mat-icon class="nav-icon">accessibility_new</mat-icon>
+                <span class="nav-text">Employees</span>
+            </a>
+            
+            <a mat-list-item
+            (click)="navigateIfNotCurrent('/dashboard/worklogs'); sidenav.close()">
+                <mat-icon class="nav-icon">table_chart</mat-icon>
+                <span class="nav-text">Work Logs</span>
+            </a>
+
+            <a mat-list-item 
+            (click)="navigateIfNotCurrent('/dashboard/attendance'); sidenav.close()">
+                <mat-icon class="nav-icon">calendar_today</mat-icon>
+                <span class="nav-text">Attendance</span>
+            </a>
+
+            <a mat-list-item
+            (click)="navigateIfNotCurrent('/dashboard/checkInOut'); sidenav.close()">
+                <mat-icon class="nav-icon">account_circle</mat-icon>
+                <span class="nav-text">Check In/Out</span>
+            </a>
+
+            <a mat-list-item *ngIf="isAdmin"
+            (click)="navigateIfNotCurrent('/dashboard/requests'); sidenav.close()">
+                <mat-icon class="nav-icon">cached</mat-icon>
+                <span class="nav-text">Signup Requests</span>
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <mat-toolbar color="primary">
+            <button mat-icon-button (click)="sidenav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span style="margin-left: 8px;">{{dashboardText}}</span>
+
+            <span class="spacer"></span>
+
+            <button mat-icon-button color="warn" (click)="logout()" class="logout-button">
+                <mat-icon class="logout-button">logout</mat-icon>
+            </button>
+        </mat-toolbar>
+
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

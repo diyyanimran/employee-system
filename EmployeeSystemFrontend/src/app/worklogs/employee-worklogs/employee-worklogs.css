@@ -1,0 +1,56 @@
+.worklog-data {
+    text-align: center;
+}
+
+.delete-button {
+    margin-left: 68px;
+    color: rgb(198, 20, 20);
+    display: flex;
+}
+
+.forms-container {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.add-button-container,
+.update-button-container {
+  flex: 1;
+}
+
+.form-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px;
+}
+
+.form-card {
+    padding: 20px;
+    max-width: 800px;
+    margin-top: 20px;
+}
+
+.input-field-code {
+    width: 300px;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.error-message {
+    color: red;
+    font-weight: 550;
+    font-size: large;
+}
+
+.done-button {
+    color: rgb(22, 131, 203)
+}
+
+.close-button {
+    color: rgb(198, 20, 20);
+}
