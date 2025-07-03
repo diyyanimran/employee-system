@@ -94,6 +94,10 @@ export class Login {
                         {
                             this.dialogService.showError(err.error);
                         }
+                        else if (err.status == 503)
+                        {
+                            this.dialogService.showError("Too many requests");
+                        }
                         else
                         {
                             this.dialogService.showError('An unexpected error occurred');
