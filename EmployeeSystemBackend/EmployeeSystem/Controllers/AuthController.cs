@@ -1,9 +1,11 @@
 ﻿using EmployeeSystem.DTOs;
 using EmployeeSystem.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace EmployeeSystem.Controllers
 {
+    [EnableRateLimiting("AuthPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase

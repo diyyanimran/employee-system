@@ -55,6 +55,14 @@ builder.Services.AddRateLimiter(options =>
                 QueueLimit = 0,
                 Window = TimeSpan.FromMinutes(1)
             }));
+
+    options.AddFixedWindowLimiter("AuthPolicy", config =>
+    {
+        config.QueueLimit = 0;
+        config.PermitLimit = 5;
+        config.AutoReplenishment = true;
+        config.Window = TimeSpan.FromMinutes(1);
+    });
 });
 
 
