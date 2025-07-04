@@ -19,15 +19,14 @@ A full stack employee management system built using Angular 20 (frontend), ASP.N
 
 ## Technology Stack
 
-| Layer       | Technology            |
-|-------------|------------------------|
-| Frontend    | Angular 20             |
-| Backend     | ASP.NET Core 9         |
-| Database    | SQL Server (SSMS 2019) |
+| Layer       | Technology              |
+|-------------|-------------------------|
+| Frontend    | Angular 20              |
+| Backend     | ASP.NET Core 9          |
+| Database    | SQL Server (SSMS 2019)  |
 | ORM         | Entity Framework Core 9 |
 
 ## Project Structure
 
-- `frontend/` – Angular project
-- `backend/` – ASP.NET Core Web API
-- `sql/` – Optional scripts for setting up the database (if included)
+- `EmployeeSystemFrontend/` – Angular project
+- `EmployeeSystemBackend/` – ASP.NET Core Web API
