@@ -25,5 +25,8 @@ export const API_ENDPOINTS = {
   checkIn: `${API_BASE}/Attendance/checkin`,
   checkOut: `${API_BASE}/Attendance/checkout`,
   updateLeave: `${API_BASE}/Attendance/updateLeave`,
-  status: `${API_BASE}/Attendance/status`
+  status: `${API_BASE}/Attendance/status`,
+
+  getMessages: `${API_BASE}/Message/get`,
+  sendMessage: `${API_BASE}/Message/send`
 };
