@@ -10,7 +10,7 @@ namespace EmployeeSystem.Models
         public string Text { get; set; } = string.Empty;
         public int SenderId { get; set; }
         public int ReceiverId { get; set; }
-        public DateOnly Date { get; set; }
+        public DateTime Time { get; set; }
 
         [ForeignKey(nameof(SenderId))]
         public Employee Sender { get; set; }

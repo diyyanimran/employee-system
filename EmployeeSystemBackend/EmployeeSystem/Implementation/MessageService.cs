@@ -23,7 +23,7 @@ namespace EmployeeSystem.Implementation
                 {
                     SenderId = m.SenderId,
                     Text = m.Text,
-                    Date = m.Date,
+                    Time = m.Time,
                     RecieverId = m.ReceiverId
                 }
                 )
@@ -41,7 +41,7 @@ namespace EmployeeSystem.Implementation
             {
                 SenderId = message.SenderId,
                 Text = message.Text,
-                Date = DateOnly.FromDateTime(DateTime.Now),
+                Time = DateTime.Now,
                 ReceiverId = message.RecieverId
             };
            
