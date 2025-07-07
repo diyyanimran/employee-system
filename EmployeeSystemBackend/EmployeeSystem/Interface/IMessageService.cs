@@ -1,0 +1,10 @@
+﻿using EmployeeSystem.DTOs;
+
+namespace EmployeeSystem.Interface
+{
+    public interface IMessageService
+    {
+        public Task<List<MessageDto>> GetMessages(MessageIdsDto messageIds);
+        public Task<bool> SendMessage(MessageDto message);
+    }
+}

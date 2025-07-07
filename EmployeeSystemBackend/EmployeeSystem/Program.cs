@@ -22,6 +22,7 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IWorklogService, WorklogService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 
 builder.Services.AddDbContext<EmployeeDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
