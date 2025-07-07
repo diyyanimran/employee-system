@@ -1,5 +1,5 @@
 .container {
-  height: 100vh;
+  height: 100%;
 }
 
 /* Top toolbar subtle shadow */
@@ -23,7 +23,7 @@ mat-sidenav {
 .content {
   padding: 16px;
   background-color: #f9f9f9;
-  height: calc(100vh - 64px);
+  /* height: calc(100vh - 64px); */
   overflow: auto;
 }
 

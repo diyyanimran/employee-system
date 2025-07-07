@@ -7,13 +7,23 @@
   margin-bottom: 15px;
 }
 
+.message-component-container
+{
+  position: relative;
+}
+
 .chat-button
 {
+  position: fixed;
   color:rgb(21, 81, 220);
+  bottom: 24px;
+  right: 24px;
   width: 72px;
   height: 55px;
   padding-top : 12px;
   background-color:rgb(232, 244, 254);
+  margin-top: 12px;
+  margin-right: 8px;
 }
 
 .chat-button mat-icon
@@ -24,6 +34,7 @@
 .chat-container
 {
   margin-top: 10px;
+  margin-bottom: 60px;
   width: 300px;
   padding: 20px 15px;
   padding-bottom: 0px;
@@ -52,6 +63,7 @@
 .message-row {
   display: flex;
   margin-top: 10px;
+  margin-right: 10px;
 }
 
 .sent {
@@ -98,6 +110,22 @@
 
 .send-button
 {
-  color:rgb(21, 81, 220);
+  color:aliceblue;
   margin-left: 8px;
+  background-color: blue;
+  height: 32px;
+  width: 32px;
+  min-width: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.send-icon
+{
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
