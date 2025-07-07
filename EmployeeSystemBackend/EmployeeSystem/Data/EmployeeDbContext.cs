@@ -9,5 +9,6 @@ namespace EmployeeSystem.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<WorkLog> WorkLogs { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }
