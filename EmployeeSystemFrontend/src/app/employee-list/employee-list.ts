@@ -130,6 +130,8 @@ export class EmployeeList implements OnInit {
       code: this.reactiveForm.controls['code'].value
     }
 
+    this.reactiveForm.reset();
+
     this.employeeService.addEmployee(this.newEmployee).subscribe
       ({
         next: reponse => {

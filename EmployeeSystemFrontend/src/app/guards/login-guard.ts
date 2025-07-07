@@ -1,8 +1,9 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router, UrlTree } from '@angular/router';
+import { CanActivateFn, Params, Router, UrlTree } from '@angular/router';
 import { LoginService } from '../services/login-service';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { Param } from '../DTOs/params.model';
 
 export const LoginGuard: CanActivateFn = (): Observable<boolean | UrlTree> => {
   const loginService = inject(LoginService);
@@ -10,6 +11,8 @@ export const LoginGuard: CanActivateFn = (): Observable<boolean | UrlTree> => {
 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken') ?? '';
+
+  let params = {} as Param;
 
   if (!accessToken) {
     return of(router.parseUrl('/login'));
@@ -23,7 +26,9 @@ export const LoginGuard: CanActivateFn = (): Observable<boolean | UrlTree> => {
       return of(true);
     }
 
-    return loginService.refreshTokens({ refreshToken: refreshToken }).pipe(
+    params = {} as Param;
+    params.RefreshToken = refreshToken;
+    return loginService.refreshTokens(params).pipe(
       map(response => {
         localStorage.setItem('accessToken', response.accessToken);
         localStorage.setItem('refreshToken', response.refreshToken);

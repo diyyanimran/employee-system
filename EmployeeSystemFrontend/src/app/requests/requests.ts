@@ -5,8 +5,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuTrigger, MatMenuModule } from '@angular/material/menu'
-import { Router, RouterModule } from '@angular/router';
+import {  Router, RouterModule } from '@angular/router';
 import { DialogService } from '../services/dialog-service';
+import { Param } from '../DTOs/params.model';
 
 @Component({
   selector: 'app-requests',
@@ -30,6 +31,7 @@ export class Requests implements OnInit {
 
   requests: IRequest[] = [];
   message: string = "";
+  params = {} as Param;
 
   displayedColumns: string[] = ['name', 'role', 'actions'];
   selectedRow: any;
@@ -57,7 +59,10 @@ export class Requests implements OnInit {
   }
 
   approve(row: any): void {
-    this.loginService.approveRequest(row).subscribe
+    this.params = {} as Param;
+    this.params.Name = row.name;
+    this.params.Role = row.role;
+    this.loginService.approveRequest(this.params).subscribe
       ({
         next: res => {
           this.router.navigate(['/dashboard/employees'],
@@ -81,7 +86,10 @@ export class Requests implements OnInit {
       {
         next: confirmed => {
           if (confirmed) {
-            this.loginService.rejectRequest(row).subscribe(
+            this.params = {} as Param;
+            this.params.Name = row.name;
+            this.params.Role = row.role;
+            this.loginService.rejectRequest(this.params).subscribe(
               { 
                 next: res => this.getRequests(),
                 error: err => this.dialogService.showError(err.error)
@@ -91,6 +99,5 @@ export class Requests implements OnInit {
         }
       }
     )
-
   }
 }

@@ -12,7 +12,7 @@ export class SignupService {
 
     constructor(private http: HttpClient) { }
 
-    signUp(signupInfo: ISignupInfo): Observable<ISignupResponse> {
+    signUp(signupInfo: any): Observable<ISignupResponse> {
         return this.http.post<ISignupResponse>(API_ENDPOINTS.signup, signupInfo)
     }
 }

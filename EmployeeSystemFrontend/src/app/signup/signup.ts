@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EmployeeService } from '../employee-list/employee-service';
 import { DialogService } from '../services/dialog-service';
+import { Param } from '../DTOs/params.model';
 
 @Component({
     selector: 'app-signup',
@@ -43,6 +44,8 @@ export class Signup {
     password: string = "";
     role: string = "";
     showPassword: boolean = false;
+
+    params = {} as Param;
 
     constructor(
         private signupService: SignupService,
@@ -82,9 +85,12 @@ export class Signup {
     }
 
     signUp(): void {
-        let signupInfo: ISignupInfo = { username: this.username, password: this.password, role: this.role }
+        this.params = {} as Param;
+        this.params.Username = this.username;
+        this.params.Password = this.password;
+        this.params.Role = this.role;
 
-        this.signupService.signUp(signupInfo).subscribe
+        this.signupService.signUp(this.params).subscribe
             (
                 {
                     next: (response) => {

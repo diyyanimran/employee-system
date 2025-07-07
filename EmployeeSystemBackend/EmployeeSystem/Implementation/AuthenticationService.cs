@@ -31,7 +31,7 @@ namespace EmployeeSystem.Implementation
             {
                 Username = request.Username,
                 Role = request.Role,
-                Active = request.Role == "Admin" ? true : false,
+                Active = true,
                 employeeId = null,
                 Approved = false
             };
@@ -71,7 +71,7 @@ namespace EmployeeSystem.Implementation
         public async Task<List<RequestDto>> GetRequests()
         {
             return await context.Logins
-                .Where(l => !l.Approved)
+                .Where(l => !l.Approved && l.Active)
                 .Select(l => new RequestDto
                 {
                     Name = l.Username,
@@ -98,7 +98,6 @@ namespace EmployeeSystem.Implementation
                 .FirstOrDefaultAsync();
             if (rejected is null)
                 return false;
-
             rejected.Active = false;
             await context.SaveChangesAsync();
             return true;

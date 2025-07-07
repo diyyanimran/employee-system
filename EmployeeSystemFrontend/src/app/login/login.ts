@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { ILoginInfo } from '../DTOs/login-info';
+import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ILoginResponse } from '../DTOs/login-response';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +12,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DialogService } from '../services/dialog-service';
+import { Param } from '../DTOs/params.model';
 
 @Component({
   selector: 'app-login',
@@ -44,8 +44,8 @@ export class Login {
     role: string = "User";
     showPassword: boolean = false;
 
-    loginInfo!: ILoginInfo;
     loginResponse!: ILoginResponse;
+    param = {} as Param;
 
     constructor(
         private loginService: LoginService,
@@ -69,12 +69,10 @@ export class Login {
             this.dialogService.showError("Password must have atleast 5 characters");
             return;
         }
-        this.username = this.reactiveForm.controls['username'].value;
-        this.password = this.reactiveForm.controls['password'].value;
-        this.loginInfo = {username: this.username, password: this.password};
+        this.param.Username = this.reactiveForm.controls['username'].value;
+        this.param.Password = this.reactiveForm.controls['password'].value;
 
-
-        this.loginService.checkLogin(this.loginInfo).subscribe
+        this.loginService.checkLogin(this.param).subscribe
         (
                 {
                     next: (response) =>
@@ -83,7 +81,6 @@ export class Login {
                         localStorage.setItem('refreshToken', response.refreshToken);
                         localStorage.setItem('username', this.username);
                         localStorage.setItem('employeeId', response.employeeId.toString());
-                        this.loginService.login();
                         this.color = "green";
                         this.loginMessage = "Login Successful"
                         this.router.navigate(['/dashboard']);
