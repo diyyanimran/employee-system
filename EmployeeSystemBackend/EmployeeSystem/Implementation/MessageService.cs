@@ -15,10 +15,10 @@ namespace EmployeeSystem.Implementation
         }
         public async Task<List<MessageDto>> GetMessages(MessageIdsDto ids)
         {
-            for (int i = 0; i < 5; i++)
-                Console.WriteLine("Ids: " + ids.SenderId + " " + ids.ReceiverId);
             List<MessageDto> messages = await context.Messages
-                .Where(m => m.SenderId == ids.SenderId && m.ReceiverId == ids.ReceiverId)
+                .Where(m => (m.SenderId == ids.SenderId && m.ReceiverId == ids.ReceiverId) 
+                || (m.ReceiverId == ids.SenderId && m.SenderId == ids.ReceiverId))
+                .OrderBy(m => m.Time)
                 .Select(m => new MessageDto
                 {
                     SenderId = m.SenderId,
