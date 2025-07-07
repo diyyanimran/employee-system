@@ -8,8 +8,6 @@ import { IBasicInfo } from '../DTOs/basic-info';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
-import { jwtDecode } from 'jwt-decode';
-import { TokenPayload } from '../DTOs/token-payload';
 
 @Component({
   selector: 'app-worklogs',

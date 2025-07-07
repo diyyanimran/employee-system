@@ -1,0 +1,103 @@
+:host {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+
+.chat-button
+{
+  color:rgb(21, 81, 220);
+  width: 72px;
+  height: 55px;
+  padding-top : 12px;
+  background-color:rgb(232, 244, 254);
+}
+
+.chat-button mat-icon
+{
+  font-size: 26px;
+}
+
+.chat-container
+{
+  margin-top: 10px;
+  width: 300px;
+  padding: 20px 15px;
+  padding-bottom: 0px;
+  background-color: rgb(240, 240, 240);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.chat-card
+{
+  height: 200px;
+  padding-left: 8px;
+  padding-bottom: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: auto;
+}
+
+.error-message
+{
+  margin-bottom: 10px;
+  margin-left: 45px;
+}
+
+
+.message-row {
+  display: flex;
+  margin-top: 10px;
+}
+
+.sent {
+  justify-content: flex-end;
+}
+
+.received {
+  justify-content: flex-start;
+}
+
+.text-bubble {
+  padding: 8px 12px;
+  border-radius: 18px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.sent .text-bubble {
+  background-color: #cce5ff;
+  color: #003366;
+}
+
+.received .text-bubble {
+  background-color: #e2e3e5;
+  color: #333;
+}
+
+.input-container {
+  padding: 8px;
+  display:flex;
+  margin-bottom: 8px;
+}
+
+.input-box {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+  background-color: white;
+}
+
+.send-button
+{
+  color:rgb(21, 81, 220);
+  margin-left: 8px;
+}

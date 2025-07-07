@@ -30,6 +30,10 @@
   position: relative;
 }
 
+.add-button-container button
+{
+  background-color:rgb(232, 244, 254);
+}
 .form-container {
   display: grid;
   grid-template-columns: 1fr 1fr auto;

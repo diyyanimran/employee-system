@@ -1,0 +1,35 @@
+<button mat-icon-button class="chat-button" (click)="toggleChat()">
+    <mat-icon class="message-icon">message</mat-icon>
+</button>
+
+<mat-card class="chat-container" *ngIf="chatOpened">
+    <mat-form-field>
+        <mat-label>Select User</mat-label>
+        <mat-select [(ngModel)]="selectedId" (selectionChange)="onSelected()">
+            <mat-option *ngFor="let employee of employees" [value]="employee.id">{{employee.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-card *ngIf="userSelected" class="chat-card">
+        <span class="error-message" *ngIf="noMessages">
+            You have no messages
+        </span>
+
+        <div class="message-row" *ngFor="let message of messages"
+            [ngClass]="message.senderId == userId ? 'sent' : 'received'">
+            <div class="text-bubble">
+                {{message.text}}
+            </div>
+        </div>
+    </mat-card>
+
+    <div class="input-container" *ngIf="userSelected">
+        <input class="input-box" 
+        [(ngModel)]="messageText"
+        placeholder="Type a message...">
+        <button mat-icon-button class="send-button" (click)="sendMessage()">
+            <mat-icon>send</mat-icon>
+        </button>
+    </div>
+
+</mat-card>

@@ -7,11 +7,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { LogoutDialog } from '../login/logout-dialog/logout-dialog';
-import { jwtDecode } from 'jwt-decode';
-import { TokenPayload } from '../DTOs/token-payload';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
 import { LoginService } from '../services/login-service';
+import { MessageComponent } from '../message/message';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,7 +22,8 @@ import { LoginService } from '../services/login-service';
     MatButtonModule,
     RouterModule,
     MatDialogModule,
-    CommonModule
+    CommonModule,
+    MessageComponent
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
