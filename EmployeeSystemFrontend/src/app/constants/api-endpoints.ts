@@ -12,6 +12,7 @@ export const API_ENDPOINTS = {
   employeeList: `${API_BASE}/Employee/all`,
   employeeInfo: `${API_BASE}/Employee/info`,
   employeeNames: `${API_BASE}/Employee/names`,
+  admins: `${API_BASE}/Employee/admins`,
   addEmployee: `${API_BASE}/Employee/add`,
   removeEmployee: `${API_BASE}/Employee/remove`,
 

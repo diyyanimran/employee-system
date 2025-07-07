@@ -18,13 +18,13 @@ namespace EmployeeSystem.Implementation
             List<MessageDto> messages = await context.Messages
                 .Where(m => (m.SenderId == ids.SenderId && m.ReceiverId == ids.ReceiverId) 
                 || (m.ReceiverId == ids.SenderId && m.SenderId == ids.ReceiverId))
-                .OrderBy(m => m.Time)
+                .OrderByDescending(m => m.Time)
                 .Select(m => new MessageDto
                 {
                     SenderId = m.SenderId,
                     Text = m.Text,
                     Time = m.Time,
-                    RecieverId = m.ReceiverId
+                    ReceiverId = m.ReceiverId
                 }
                 )
                 .ToListAsync();
@@ -42,7 +42,7 @@ namespace EmployeeSystem.Implementation
                 SenderId = message.SenderId,
                 Text = message.Text,
                 Time = DateTime.Now,
-                ReceiverId = message.RecieverId
+                ReceiverId = message.ReceiverId
             };
            
             context.Messages.Add(newMessage);

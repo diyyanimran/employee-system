@@ -76,15 +76,9 @@ namespace EmployeeSystem.Controllers
         [HttpPost("refresh")]
         public async Task<ActionResult<TokenResponseDto>> RefreshTokens([FromBody] RefreshTokenRequestDto request)
         {
-            for (int i = 0; i < 10; i++)
-                Console.WriteLine("ReachingBackend");
-
             var result = await authService.RefreshTokensAsync(request.refreshToken);
             if (result is null || result.accessToken is null || result.refreshToken is null)
                 return Unauthorized("Invalid Refresh Token");
-
-            for (int i=0; i<10; i++)
-                Console.WriteLine("RefreshedToken");
             return Ok(result);
         }
     }

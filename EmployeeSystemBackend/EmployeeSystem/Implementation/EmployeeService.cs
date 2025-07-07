@@ -90,7 +90,7 @@ namespace EmployeeSystem.Implementation
             return await context.Employees
                 .OrderBy(e => e.Id)
                 .Where(e => e.User.Active)
-                .Select(e => new BasicInfoDto{ Id = e.Id, Name = e.Name })
+                .Select(e => new BasicInfoDto { Name = e.Name, Id = e.Id})
                 .ToListAsync();
         }
 
@@ -99,6 +99,14 @@ namespace EmployeeSystem.Implementation
             return await context.Employees
                 .Where(e => e.User.Active)
                 .Select(e => new NameDto { Name = e.Name } )
+                .ToListAsync();
+        }
+
+        public async Task<List<BasicInfoDto>> GetAdmins()
+        {
+            return await context.Employees
+                .Where(e => e.User.Active && e.User.Role == "Admin")
+                .Select(e => new BasicInfoDto { Name = e.Name, Id = e.Id })
                 .ToListAsync();
         }
 

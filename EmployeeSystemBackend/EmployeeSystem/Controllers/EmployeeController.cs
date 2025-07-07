@@ -44,6 +44,15 @@ namespace EmployeeSystem.Controllers
             return Ok(names);
         }
 
+        [HttpGet("admins")]
+        public async Task<ActionResult<List<BasicInfoDto>>> GetAdmins()
+        {
+            List<BasicInfoDto> admins = await employeeService.GetAdmins();
+            if (admins.Count == 0)
+                return BadRequest("No Admins Found");
+            return Ok(admins);
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpPost("add")]
         public async Task<IActionResult> AddEmployee(NewEmployeeDto newEmployee)

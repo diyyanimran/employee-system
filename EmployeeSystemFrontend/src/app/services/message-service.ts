@@ -18,7 +18,6 @@ export class MessageService {
 
   sendMessage(message: any): Observable<void>
   {
-    console.log("Sending from service: ", message);
     return this.http.post<void>(API_ENDPOINTS.sendMessage, message);
   }
 }

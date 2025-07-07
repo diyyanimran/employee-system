@@ -29,6 +29,11 @@ export class EmployeeService {
     return this.http.get<IName[]>(API_ENDPOINTS.employeeNames);
   }
 
+  getAdmins(): Observable<IBasicInfo[]>
+  {
+    return this.http.get<IBasicInfo[]>(API_ENDPOINTS.admins);
+  }
+
   addEmployee(newEmployee: INewEmployee): Observable<void>
   {
     return this.http.post<void>(API_ENDPOINTS.addEmployee, newEmployee);
