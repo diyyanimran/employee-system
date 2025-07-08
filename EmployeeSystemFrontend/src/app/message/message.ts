@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IMessage } from '../DTOs/message';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { EmployeeService } from '../employee-list/employee-service';
 import { IBasicInfo } from '../DTOs/basic-info';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MessageService } from '../services/message-service';
 import { Param } from '../DTOs/params.model';
 import { FormsModule } from '@angular/forms';
@@ -25,7 +25,8 @@ import { LoginService } from '../services/login-service';
       FormsModule,
       MatCardModule,
       MatIconModule,
-      MatButtonModule
+      MatButtonModule,
+      DatePipe
     ],
   templateUrl: './message.html',
   styleUrl: './message.css'
@@ -49,6 +50,7 @@ export class MessageComponent implements OnInit{
 
   messages: IMessage[] = [];
   messageText: string = "";
+  currentDate: Date | null = null;
 
   ngOnInit(): void {
     this.getRole();
@@ -128,9 +130,23 @@ export class MessageComponent implements OnInit{
     this.messageService.sendMessage(this.params).subscribe
       ({
         next: response => {
-          this.loadMessages();
+          this.noMessages = false;
+          this.messages.unshift
+          ({text: this.messageText, 
+            receiverId: this.selectedId!, 
+            senderId: this.userId,
+            time: new Date()
+          });
           this.messageText = "";
         }
       })
-  }
+  } 
+
+checkDateChanged(current: Date, next?: Date): boolean {
+  const currentDate = new Date(current).toDateString();
+  const nextDate = next ? new Date(next).toDateString() : null;
+  return !next || currentDate !== nextDate;
+}
+
+
 }

@@ -74,11 +74,30 @@
   justify-content: flex-start;
 }
 
+.date {
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: gray;
+  font-size: 0.8rem;
+  margin: 10px 0;
+  clear: both;
+}
+
+
 .text-bubble {
   padding: 8px 12px;
   border-radius: 18px;
   max-width: 70%;
   word-wrap: break-word;
+}
+
+.sent .message-container {
+  align-items: flex-end;
+}
+
+.received .message-container {
+  align-items: flex-start;
 }
 
 .sent .text-bubble {
@@ -128,4 +147,17 @@
   font-size: 20px;
   width: 20px;
   height: 20px;
+}
+
+.time-stamp {
+  font-size: 11px;
+  color: #777;
+  margin-bottom: 2px;
+}
+
+.message-container
+{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
