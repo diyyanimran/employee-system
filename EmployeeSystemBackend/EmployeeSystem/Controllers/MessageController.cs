@@ -1,7 +1,9 @@
 ﻿using EmployeeSystem.DTOs;
+using EmployeeSystem.Hubs;
 using EmployeeSystem.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace EmployeeSystem.Controllers
 {
@@ -10,9 +12,11 @@ namespace EmployeeSystem.Controllers
     public class MessageController : ControllerBase
     {
         private IMessageService messageService;
+        
         public MessageController(IMessageService messageService_)
         {
             messageService = messageService_;
+            
         }
 
         [HttpPost("get")]

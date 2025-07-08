@@ -13,6 +13,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { LoginService } from '../services/login-service';
+import { SignalrService } from '../services/signalr-service';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-message',
@@ -26,65 +28,101 @@ import { LoginService } from '../services/login-service';
       MatCardModule,
       MatIconModule,
       MatButtonModule,
-      DatePipe
+      DatePipe,
+      MatTableModule
     ],
   templateUrl: './message.html',
   styleUrl: './message.css'
 })
-export class MessageComponent implements OnInit{
+export class MessageComponent implements OnInit {
   constructor(
     private employeeService: EmployeeService,
     private messageService: MessageService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private signalRService: SignalrService
   ) { }
   params = {} as Param;
 
   chatOpened: boolean = false;
+  showTable: boolean = false;
   noMessages: boolean = true;
   isAdmin: boolean = false;
+  broadcasting: boolean = false;
 
   employees: IBasicInfo[] = [];
   selectedId: number | null = null;
-  userId: number = Number(localStorage.getItem('employeeId'));
+  selectedName!: string;
+  userId!: number;
   userSelected: boolean = false;
 
   messages: IMessage[] = [];
   messageText: string = "";
   currentDate: Date | null = null;
 
-  ngOnInit(): void {
-    this.getRole();
+  async ngOnInit(): Promise<void> {
+    this.userId = Number(localStorage.getItem('employeeId'));
+    await this.getRole();
+
+    this.signalRService.startConnection(this.userId);
+
+    this.signalRService.onReceiveMessage((senderId, message) => {
+      if (this.selectedId == senderId) {
+        this.messages.unshift({
+          senderId: senderId,
+          receiverId: this.userId,
+          text: message,
+          time: new Date()
+        });
+      }
+    });
   }
 
   toggleChat(): void {
     if (this.chatOpened) {
       this.chatOpened = false;
+      this.showTable = false;
+      this.userSelected = false;
     }
     else {
       this.chatOpened = true;
+      this.showTable = true;
       this.loadEmployees();
     }
   }
 
-  getRole(): void {
+  goBack()
+  {
+    this.showTable = true;
+    this.selectedId = null;
+    this.userSelected = false;
+    this.broadcasting = false;
+  }
+
+  getRole(): Promise<void> {
     const employeeId = this.userId;
 
-    this.loginService.getRole(employeeId).subscribe
-      ({
-        next: (response: { role: string; }) => this.isAdmin = ("Admin" == response.role),
-        error: err => console.log(err.error)
-      })
+    return new Promise((resolve, reject) => {
+      this.loginService.getRole(employeeId).subscribe({
+        next: (response: { role: string }) => {
+          this.isAdmin = (response.role === "Admin");
+          resolve();
+        },
+        error: err => {
+          console.log(err.error);
+          reject();
+        }
+      });
+    });
+
+
   }
 
   loadEmployees(): void {
     if (!this.isAdmin) {
-      this.employeeService.getAdmins().subscribe
-        ({
-          next: response => {
-            this.employees = response.filter(e => e.id !== this.userId);
-          },
-          error: err => console.error(err.error)
-        })
+      this.selectedId = 1;
+      this.selectedName = "Diyyan";
+      this.userSelected = true;
+      this.loadMessages();
     }
     else {
       this.employeeService.getAllEmployees().subscribe
@@ -98,10 +136,23 @@ export class MessageComponent implements OnInit{
 
   }
 
-  onSelected(): void {
-    this.loadMessages();
+  selectUser(receiverId: number, receiverName: string): void
+  {
+    this.showTable = false;
     this.userSelected = true;
+    this.selectedId = receiverId;
+    this.selectedName = receiverName;
     this.messageText = "";
+    this.loadMessages();
+  }
+
+  selectBroadcast(): void
+  {
+    this.userSelected = true;
+    this.showTable = false;
+    this.selectedName = "Broadcast";
+    this.noMessages = false;
+    this.broadcasting = true;
   }
 
   loadMessages(): void {
@@ -121,8 +172,42 @@ export class MessageComponent implements OnInit{
       })
   }
 
+  sendBroadcast(): void
+  {
+    this.messages.unshift
+            ({
+              text: this.messageText,
+              receiverId: this.selectedId!,
+              senderId: this.userId,
+              time: new Date()
+            });
+            this.noMessages = false;
+            
+
+    for (const employee of this.employees)
+    {
+      this.params = {} as Param;
+      this.params.SenderId = this.userId;
+      this.params.ReceiverId = employee.id;
+      this.params.Text = this.messageText;
+
+      this.messageService.sendMessage(this.params).subscribe
+      ({
+        next: response => {
+        }
+      })
+    };
+
+    this.messageText = "";
+  }
+
   sendMessage(): void {
     if (!this.messageText.trim()) return;
+    if (this.broadcasting)
+    {
+      this.sendBroadcast();
+      return;
+    }
     this.params = {} as Param;
     this.params.Text = this.messageText;
     this.params.SenderId = this.userId;
@@ -132,21 +217,22 @@ export class MessageComponent implements OnInit{
         next: response => {
           this.noMessages = false;
           this.messages.unshift
-          ({text: this.messageText, 
-            receiverId: this.selectedId!, 
-            senderId: this.userId,
-            time: new Date()
-          });
+            ({
+              text: this.messageText,
+              receiverId: this.selectedId!,
+              senderId: this.userId,
+              time: new Date()
+            });
           this.messageText = "";
         }
       })
-  } 
+  }
 
-checkDateChanged(current: Date, next?: Date): boolean {
-  const currentDate = new Date(current).toDateString();
-  const nextDate = next ? new Date(next).toDateString() : null;
-  return !next || currentDate !== nextDate;
-}
+  checkDateChanged(current: Date, next?: Date): boolean {
+    const currentDate = new Date(current).toDateString();
+    const nextDate = next ? new Date(next).toDateString() : null;
+    return !next || currentDate !== nextDate;
+  }
 
 
 }

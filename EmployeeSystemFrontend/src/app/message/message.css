@@ -36,21 +36,68 @@
   margin-top: 10px;
   margin-bottom: 60px;
   width: 300px;
-  padding: 20px 15px;
-  padding-bottom: 0px;
+  padding: 10px 15px;
   background-color: rgb(240, 240, 240);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  height: 500px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.back-container
+{
+  display: flex;
+  margin-bottom: 4px;
+  background-color: #cce5ff;
+  border-radius: 20px;
+}
+
+.receiver-name
+{
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.chat-list-table-container
+{
+  flex: 1;
+  overflow-y: auto;
+  padding: 0px 10px;
+  border-radius: 12px;
+  background-color: #f5f5f5; 
+}
+
+.chat-list-table
+{
+  background-color: inherit;
+}
+.chat-table-row
+{
+  cursor: pointer;
+  transition: background-color 0.1s ease-in-out;
+}
+.broadcast-row
+{
+  display: flex;
+  padding: 10px 10px;
+  align-items: center;
+  height: 30px;
+}
+
+.chat-table-row:hover {
+  background-color: #f0f0f0; 
 }
 
 .chat-card
 {
-  height: 200px;
   padding-left: 8px;
   padding-bottom: 10px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column-reverse;
   overflow-y: auto;
+  flex: 1;
 }
 
 .error-message
@@ -84,7 +131,6 @@
   clear: both;
 }
 
-
 .text-bubble {
   padding: 8px 12px;
   border-radius: 18px;
@@ -113,7 +159,6 @@
 .input-container {
   padding: 8px;
   display:flex;
-  margin-bottom: 8px;
 }
 
 .input-box {

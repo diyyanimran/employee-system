@@ -11,8 +11,6 @@ import { INewEmployee } from '../DTOs/new-employee';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
-import { jwtDecode } from 'jwt-decode';
-import { TokenPayload } from '../DTOs/token-payload';
 import { MatCardModule } from '@angular/material/card';
 import { DialogService } from '../services/dialog-service';
 import { LoginService } from '../services/login-service';
@@ -66,25 +64,30 @@ export class EmployeeList implements OnInit {
     this.loadEmployees();
 
     this.route.queryParams.subscribe
-    (
-      params => 
-      {
-        if (params['openAdd'] === 'true')
-          this.isAddingNew = true;
-        if (params['name'])
-          this.reactiveForm.get('name')?.setValue(params['name']);
-      }
-    )
+      (
+        params => {
+          if (params['openAdd'] === 'true')
+            this.isAddingNew = true;
+          if (params['name'])
+            this.reactiveForm.get('name')?.setValue(params['name']);
+
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: {},
+            replaceUrl: true
+          });
+        }
+      )
   }
 
   getRole(): void {
     const employeeId = Number(localStorage.getItem('employeeId'));
 
     this.loginService.getRole(employeeId).subscribe
-    ({
-      next: response => this.isAdmin = ("Admin" == response.role),
-      error: err => console.log(err.error)
-    })
+      ({
+        next: response => this.isAdmin = ("Admin" == response.role),
+        error: err => console.log(err.error)
+      })
   }
 
   loadEmployees(): void {

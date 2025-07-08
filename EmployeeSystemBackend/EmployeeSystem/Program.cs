@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
-using Microsoft.AspNetCore.Http;
+using EmployeeSystem.Hubs;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -52,7 +52,7 @@ builder.Services.AddRateLimiter(options =>
             factory: partition => new FixedWindowRateLimiterOptions
             {
                 AutoReplenishment = true,
-                PermitLimit = 60,
+                PermitLimit = 300,
                 QueueLimit = 0,
                 Window = TimeSpan.FromMinutes(1)
             }));
@@ -60,11 +60,14 @@ builder.Services.AddRateLimiter(options =>
     options.AddFixedWindowLimiter("AuthPolicy", config =>
     {
         config.QueueLimit = 0;
-        config.PermitLimit = 15;
+        config.PermitLimit = 300;
         config.AutoReplenishment = true;
         config.Window = TimeSpan.FromMinutes(1);
     });
 });
+
+builder.Services.AddSignalR();
+
 
 
 var allowedOrigins = builder.Configuration.GetValue<string>("allowedOrigins")!.Split(',')!;
@@ -86,22 +89,24 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(
     x => x
-            .AllowAnyOrigin()
+            .WithOrigins("http://localhost:4200")
             .AllowAnyMethod()
             .AllowAnyHeader()
+            .AllowCredentials()
             );
 
 app.UseRateLimiter();
-
+    
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
+app.MapHub<ChatHub>("/chathub");
+
 app.UseStaticFiles();
 
 app.MapControllers();
 
 app.Run();
-

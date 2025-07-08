@@ -1,7 +1,9 @@
 ﻿using EmployeeSystem.Data;
 using EmployeeSystem.DTOs;
+using EmployeeSystem.Hubs;
 using EmployeeSystem.Interface;
 using EmployeeSystem.Models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeSystem.Implementation
@@ -9,9 +11,11 @@ namespace EmployeeSystem.Implementation
     public class MessageService : IMessageService
     {
         private EmployeeDbContext context;
-        public MessageService(EmployeeDbContext _context) 
+        private IHubContext<ChatHub> hubContext;
+        public MessageService(EmployeeDbContext _context, IHubContext<ChatHub> hubContext_) 
         {
             context = _context;
+            hubContext = hubContext_;
         }
         public async Task<List<MessageDto>> GetMessages(MessageIdsDto ids)
         {
@@ -47,8 +51,15 @@ namespace EmployeeSystem.Implementation
            
             context.Messages.Add(newMessage);
             await context.SaveChangesAsync();
+
+            if (ChatHub.connections.TryGetValue(message.ReceiverId, out var connectionId))
+            {
+                await hubContext.Clients.Client(connectionId)
+                    .SendAsync("receiveMessage", message.SenderId, message.Text);       
+            }
+
             return true;
 
-        }
+        }   
     }
 }
