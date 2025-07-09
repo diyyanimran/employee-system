@@ -28,7 +28,8 @@ namespace EmployeeSystem.Implementation
                     SenderId = m.SenderId,
                     Text = m.Text,
                     Time = m.Time,
-                    ReceiverId = m.ReceiverId
+                    ReceiverId = m.ReceiverId,
+                    IsRead = m.IsRead
                 }
                 )
                 .ToListAsync();
@@ -46,7 +47,8 @@ namespace EmployeeSystem.Implementation
                 SenderId = message.SenderId,
                 Text = message.Text,
                 Time = DateTime.Now,
-                ReceiverId = message.ReceiverId
+                ReceiverId = message.ReceiverId,
+                IsRead = false
             };
            
             context.Messages.Add(newMessage);

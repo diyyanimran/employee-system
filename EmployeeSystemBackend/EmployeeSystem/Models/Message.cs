@@ -11,6 +11,7 @@ namespace EmployeeSystem.Models
         public int SenderId { get; set; }
         public int ReceiverId { get; set; }
         public DateTime Time { get; set; }
+        public bool IsRead { get; set; }
 
         [ForeignKey(nameof(SenderId))]
         public Employee Sender { get; set; }
