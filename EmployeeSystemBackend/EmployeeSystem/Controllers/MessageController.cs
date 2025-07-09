@@ -35,5 +35,14 @@ namespace EmployeeSystem.Controllers
             if (!sent) return BadRequest("Message could not be sent");
             return Ok();
         }
+
+        [HttpPost("read")]
+        public async Task<IActionResult> MarkAsRead(MessageIdsDto ids)
+        {
+            bool marked = await messageService.MarkAsRead(ids);
+            if (!marked)
+                return BadRequest("Messages could not be marked as read");
+            return Ok();
+        }
     }
 }

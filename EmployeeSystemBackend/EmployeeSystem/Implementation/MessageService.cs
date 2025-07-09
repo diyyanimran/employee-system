@@ -61,7 +61,24 @@ namespace EmployeeSystem.Implementation
             }
 
             return true;
-
         }   
+
+        public async Task<bool> MarkAsRead(MessageIdsDto ids)
+        {
+            List<Message> messages = await context.Messages
+                .Where(m => m.SenderId == ids.SenderId && m.ReceiverId == ids.ReceiverId)
+                .ToListAsync();
+
+            if (messages is null)
+                return false;
+
+            foreach(Message message in messages)
+            {
+                message.IsRead = true;
+            }
+
+            await context.SaveChangesAsync();
+            return true;
+        }
     }
 }
