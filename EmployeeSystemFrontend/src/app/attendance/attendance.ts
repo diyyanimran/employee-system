@@ -7,8 +7,6 @@ import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/ro
 import { filter } from 'rxjs';
 import { IBasicInfo } from '../DTOs/basic-info';
 import { EmployeeService } from '../employee-list/employee-service';
-import { jwtDecode } from 'jwt-decode';
-import { TokenPayload } from '../DTOs/token-payload';
 import { MatCardModule } from '@angular/material/card';
 import { LoginService } from '../services/login-service';
 
@@ -30,7 +28,7 @@ import { LoginService } from '../services/login-service';
 export class Attendance implements OnInit {
   selectedId: number | null = null;
   names: IBasicInfo[] = [];
-  employeeInfo: IBasicInfo | null = null;
+  username!: string;
   isAdmin!: boolean;
 
   constructor(
@@ -40,9 +38,9 @@ export class Attendance implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit(): void {
-    this.getRole();
-
+  async ngOnInit(): Promise<void> {
+    await this.getRole();
+    this.username = localStorage.getItem("username")!;
     this.route.firstChild?.paramMap.subscribe(
       params => {
         this.selectedId = Number(params.get('id'));
@@ -60,34 +58,36 @@ export class Attendance implements OnInit {
 
       }
       )
-
-    this.employeeService.getAllNamesAndIDs().subscribe
-      ({
-        next: n => {
-          this.names = n;
-          this.verifyRole();
-        },
-        error: err => console.error(err.error)
-      })
+    if (this.isAdmin) {
+      this.employeeService.getAllNamesAndIDs().subscribe
+        ({
+          next: n => {
+            this.names = n;
+          },
+          error: err => console.error(err.error)
+        })
+    }
   }
 
   onSelected(): void {
     this.router.navigate(["/dashboard/attendance", this.selectedId]);
   }
 
-  getRole(): void {
+  getRole(): Promise<void> {
     const employeeId = Number(localStorage.getItem('employeeId'));
 
-    this.loginService.getRole(employeeId).subscribe
-    ({
-      next: response => this.isAdmin = ("Admin" == response.role),
-      error: err => console.log(err.error)
+    return new Promise((resolve, reject) => {
+      this.loginService.getRole(employeeId).subscribe
+        ({
+          next: response => {
+            this.isAdmin = ("Admin" == response.role);
+            resolve();
+          },
+          error: err => {
+            console.log(err.error);
+            reject();
+          }
+        })
     })
-  }
-
-  verifyRole(): void {
-    this.employeeInfo = this.names.find(e => e.name === localStorage.getItem('username')) ?? null;
-    this.selectedId = this.employeeInfo?.id ?? null;
-    this.router.navigate(['/dashboard/attendance', this.employeeInfo?.id])
   }
 }

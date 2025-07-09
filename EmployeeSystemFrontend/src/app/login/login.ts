@@ -79,7 +79,7 @@ export class Login {
                     {
                         localStorage.setItem('accessToken', response.accessToken);
                         localStorage.setItem('refreshToken', response.refreshToken);
-                        localStorage.setItem('username', this.username);
+                        localStorage.setItem('username', this.param.Username);
                         localStorage.setItem('employeeId', response.employeeId.toString());
                         this.color = "green";
                         this.loginMessage = "Login Successful"

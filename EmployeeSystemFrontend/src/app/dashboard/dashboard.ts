@@ -79,7 +79,14 @@ export class Dashboard implements OnInit {
 
   navigateIfNotCurrent(path: string): void {
     if (!this.router.url.includes(path)) {
-      this.router.navigate([path]);
+      if (this.isAdmin) {
+        this.router.navigate([path]);
+      }
+      else
+      {
+        this.router.navigate([path, Number(localStorage.getItem('employeeId'))]);
+      }
+
     }
   }
 
@@ -87,10 +94,10 @@ export class Dashboard implements OnInit {
     const employeeId = Number(localStorage.getItem('employeeId'));
 
     this.loginService.getRole(employeeId).subscribe
-    ({
-      next: response => this.isAdmin = ("Admin" == response.role),
-      error: err => console.log(err.error)
-    })
+      ({
+        next: response => this.isAdmin = ("Admin" == response.role),
+        error: err => console.log(err.error)
+      })
   }
 
 }
