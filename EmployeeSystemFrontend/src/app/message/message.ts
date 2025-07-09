@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { LoginService } from '../services/login-service';
 import { SignalrService } from '../services/signalr-service';
 import { MatTableModule } from '@angular/material/table';
+import { IUnreadCount } from '../DTOs/unread-count';
 
 @Component({
   selector: 'app-message',
@@ -56,6 +57,7 @@ export class MessageComponent implements OnInit {
   userSelected: boolean = false;
 
   messages: IMessage[] = [];
+  unreadCounts: IUnreadCount[] = [];
   messageText: string = "";
   currentDate: Date | null = null;
 
@@ -71,8 +73,19 @@ export class MessageComponent implements OnInit {
           senderId: senderId,
           receiverId: this.userId,
           text: message,
-          time: new Date()
+          time: new Date(),
+          isRead: false
         });
+      }
+
+      let exists = this.unreadCounts
+      .find(c => c.senderId == senderId && c.receiverId == this.userId);
+      if (exists)
+        exists.unreadCount++;
+      else
+      {
+        this.unreadCounts
+      .push({senderId: senderId, receiverId: this.userId, unreadCount: 1});
       }
     });
   }
@@ -87,6 +100,7 @@ export class MessageComponent implements OnInit {
       this.chatOpened = true;
       this.showTable = true;
       this.loadEmployees();
+      this.loadUnreadCount();
     }
   }
 
@@ -143,6 +157,7 @@ export class MessageComponent implements OnInit {
     this.selectedId = receiverId;
     this.selectedName = receiverName;
     this.messageText = "";
+    this.markAsRead();
     this.loadMessages();
   }
 
@@ -179,7 +194,8 @@ export class MessageComponent implements OnInit {
               text: this.messageText,
               receiverId: this.selectedId!,
               senderId: this.userId,
-              time: new Date()
+              time: new Date(),
+              isRead: false
             });
             this.noMessages = false;
             
@@ -221,7 +237,8 @@ export class MessageComponent implements OnInit {
               text: this.messageText,
               receiverId: this.selectedId!,
               senderId: this.userId,
-              time: new Date()
+              time: new Date(),
+              isRead: false
             });
           this.messageText = "";
         }
@@ -234,5 +251,41 @@ export class MessageComponent implements OnInit {
     return !next || currentDate !== nextDate;
   }
 
+  loadUnreadCount(): void
+  {
+    this.messageService.getUnreadCount().subscribe
+    ({
+      next: response => 
+      {
+        this.unreadCounts = response;
+      },
+      error: err => console.log(err.error)
+    })
+  }
+
+  getUnreadCount(employeeId: number): number
+  {
+    for (const count of this.unreadCounts)
+    {
+      if (count.senderId == employeeId && count.receiverId == this.userId)
+        return count.unreadCount
+    }
+    return 0;
+  }
+
+  markAsRead(): void
+  {
+    this.params = {} as Param;
+    this.params.SenderId = this.selectedId!;
+    this.params.ReceiverId = this.userId;
+
+    let match = this.unreadCounts
+    .find(c => c.receiverId == this.userId && c.senderId == this.selectedId!);
+
+    if (match)
+      match.unreadCount = 0;
+
+    this.messageService.markAsRead(this.params).subscribe();
+  }
 
 }

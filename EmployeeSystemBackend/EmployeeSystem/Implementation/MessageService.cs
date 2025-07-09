@@ -61,7 +61,36 @@ namespace EmployeeSystem.Implementation
             }
 
             return true;
-        }   
+        }
+
+        public async Task<List<UnreadCountDto>> GetUnreadCount()
+        {
+            List<Message> messages = await context.Messages
+                .Where(m => !m.IsRead)
+                .ToListAsync();
+
+            List<UnreadCountDto> counts = new List<UnreadCountDto>();
+            foreach (Message message in messages)
+            {
+                var exists = counts
+                    .FirstOrDefault(c => c.SenderId == message.SenderId && c.ReceiverId == message.ReceiverId);
+
+                if (exists != null)
+                {
+                    exists.UnreadCount++;
+                }
+                else
+                {
+                    counts.Add(new UnreadCountDto
+                    {
+                        SenderId = message.SenderId,
+                        ReceiverId = message.ReceiverId,
+                        UnreadCount = 1
+                    });
+                }
+            }
+            return counts;
+        }
 
         public async Task<bool> MarkAsRead(MessageIdsDto ids)
         {

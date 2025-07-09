@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IMessage } from '../DTOs/message';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
+import { IUnreadCount } from '../DTOs/unread-count';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,15 @@ export class MessageService {
   sendMessage(message: any): Observable<void>
   {
     return this.http.post<void>(API_ENDPOINTS.sendMessage, message);
+  }
+
+  getUnreadCount(): Observable<IUnreadCount[]>
+  {
+    return this.http.get<IUnreadCount[]>(API_ENDPOINTS.unreadCount);
+  }
+
+  markAsRead(ids: any): Observable<void>
+  {
+    return this.http.post<void>(API_ENDPOINTS.markAsRead, ids);
   }
 }

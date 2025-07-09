@@ -1,4 +1,5 @@
-﻿using EmployeeSystem.DTOs;
+﻿using System.Diagnostics.Metrics;
+using EmployeeSystem.DTOs;
 using EmployeeSystem.Hubs;
 using EmployeeSystem.Interface;
 using Microsoft.AspNetCore.Http;
@@ -34,6 +35,15 @@ namespace EmployeeSystem.Controllers
             bool sent = await messageService.SendMessage(message);
             if (!sent) return BadRequest("Message could not be sent");
             return Ok();
+        }
+
+        [HttpGet("unread")]
+        public async Task<ActionResult<List<UnreadCountDto>>> GetUnreadCount()
+        {
+            List<UnreadCountDto> counts = await messageService.GetUnreadCount();
+            if (counts.Count == 0)
+                return BadRequest("All messages read");
+            return Ok(counts);
         }
 
         [HttpPost("read")]

@@ -29,5 +29,7 @@ export const API_ENDPOINTS = {
   status: `${API_BASE}/Attendance/status`,
 
   getMessages: `${API_BASE}/Message/get`,
-  sendMessage: `${API_BASE}/Message/send`
+  sendMessage: `${API_BASE}/Message/send`,
+  unreadCount: `${API_BASE}/Message/unread`,
+  markAsRead: `${API_BASE}/Message/read`
 };
