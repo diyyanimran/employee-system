@@ -79,7 +79,7 @@ export class Dashboard implements OnInit {
 
   navigateIfNotCurrent(path: string): void {
     if (!this.router.url.includes(path)) {
-      if (this.isAdmin) {
+      if (this.isAdmin || path.includes('/employees')) {
         this.router.navigate([path]);
       }
       else

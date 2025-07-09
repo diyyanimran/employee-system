@@ -8,7 +8,7 @@
 }
 
 .table-container {
-  height: 60%;
+  height: 100%;
   overflow-y: auto;
   margin: 10px 180px 16px 180px;
 }
